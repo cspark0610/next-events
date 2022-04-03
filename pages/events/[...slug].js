@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import EventList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
@@ -30,6 +31,10 @@ export default function FileteredEventsPage(props) {
 
 	return (
 		<>
+			<Head>
+				<title>Filtered Events</title>
+				<meta name="description" content={`all evnts for ${props.date.year} and $ ${props.date.month}`} />
+			</Head>
 			<ResultsTitle date={date} />
 			<EventList items={filteredEvents} />
 		</>
