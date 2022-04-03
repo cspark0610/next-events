@@ -1,16 +1,45 @@
 import { useRouter } from 'next/router';
 import EventList from '../../components/events/event-list';
 import ResultsTitle from '../../components/events/results-title';
-import { getFilteredEvents } from '../../dummy-data';
+import { getFilteredEvents } from '../../helpers/api-util';
 
-export default function FileteredEventsPage() {
+export default function FileteredEventsPage(props) {
 	const router = useRouter();
 
-	const filteredRouteData = router.query.slug;
+	// const filteredRouteData = router.query.slug;
 	//console.log(filteredRouteData) [...slug] = ['2020', '3']
-	if (!filteredRouteData) {
-		return <p className="center">Loading...</p>;
+	// if (!filteredRouteData) {
+	// 	return <p className="center">Loading...</p>;
+	// }
+
+	// const filteredYear = filteredRouteData[0];
+	// const filteredMonth = filteredRouteData[1];
+	// const numYear = parseInt(filteredYear, 10);
+	// const numMonth = parseInt(filteredMonth, 10);
+
+	if (props.hasError) {
+		return <p className="center">Invalid Filter Date, adjust your values</p>;
 	}
+
+	const filteredEvents = props.events;
+
+	if (!filteredEvents.length || !filteredEvents) {
+		return <p className="center">No Events Found for chosen year and month</p>;
+	}
+	const date = new Date(props.date.year, props.date.month - 1);
+
+	return (
+		<>
+			<ResultsTitle date={date} />
+			<EventList items={filteredEvents} />
+		</>
+	);
+}
+
+// getServerSideProps es mas apropiado en este caso
+
+export async function getServerSideProps(ctx) {
+	const filteredRouteData = ctx.params.slug;
 
 	const filteredYear = filteredRouteData[0];
 	const filteredMonth = filteredRouteData[1];
@@ -26,22 +55,23 @@ export default function FileteredEventsPage() {
 		numMonth < 1 ||
 		numMonth > 12
 	) {
-		return <p className="center">Invalid Filter Date, adjust your values</p>;
+		return {
+			props: { hasError: true },
+			notFound: true,
+		};
 	}
-	const filteredEvents = getFilteredEvents({
+	const filteredEvents = await getFilteredEvents({
 		year: numYear,
 		month: numMonth,
 	});
 
-	if (!filteredEvents.length || !filteredEvents) {
-		return <p className="center">No Events Found for chosen year and month</p>;
-	}
-	const date = new Date(numYear, numMonth - 1);
-
-	return (
-		<>
-			<ResultsTitle date={date} />
-			<EventList items={filteredEvents} />
-		</>
-	);
+	return {
+		props: {
+			events: filteredEvents,
+			date: {
+				year: numYear,
+				month: numMonth,
+			},
+		},
+	};
 }

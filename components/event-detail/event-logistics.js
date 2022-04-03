@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import AddressIcon from '../icons/address-icon';
 import DateIcon from '../icons/date-icon';
 import LogisticsItem from './logistics-item';

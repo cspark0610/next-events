@@ -1363,6 +1363,11 @@
   dependencies:
     "queue-microtask" "^1.2.2"
 
+"safe-json-stringify@^1.2.0":
+  "integrity" "sha512-gH8eh2nZudPQO6TytOvbxnuhYBOvDBBLW52tz5q6X58lJcd/tkmqFR+5Z9adS8aJtURSXWThWy/xJtJwixErvg=="
+  "resolved" "https://registry.npmjs.org/safe-json-stringify/-/safe-json-stringify-1.2.0.tgz"
+  "version" "1.2.0"
+
 "scheduler@^0.20.2":
   "integrity" "sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ=="
   "resolved" "https://registry.npmjs.org/scheduler/-/scheduler-0.20.2.tgz"
